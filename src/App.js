@@ -2,47 +2,36 @@ import React from 'react';
 import './App.css';
 import { connect } from 'react-redux';
 
+
 class App extends React.Component{
   render(){
     return (
       <div className="App">
-        <div>Age: <span>{this.props.age}</span></div>
-        <button onClick={this.props.onAgeUp}>Age Up</button>
-        <button onClick={this.props.onAgeDown}>Age Down</button>
-        <hr/>
-        <div>History</div>
-        <div>
-          <ul>
-            {
-              this.props.history.map(el => (
-                <li
-                 key={el.id}
-                 onClick={() => this.props.onDeleteItem(el.id)}
-                 >
-                 {el.age}
-                </li>
-              ))
-
-            }
-          </ul>
+        <div className="col">
+          <div><span>A:</span><span>{this.props.a}</span></div>
+          <button onClick={() => this.props.updateA(this.props.b)}>Update A</button>
         </div>
-      </div>
+        <div className="col">
+          <div><span>B:</span><span>{this.props.b}</span></div>
+          <button onClick={() => this.props.updateB(this.props.a)}>Update B</button>
+        </div>
+      </div>  
     );
   }
-} 
+}  
 
-const mapStateToProps = (state) => {
-  return {
-    age: state.age,
-    history: state.history
+const mapStoreToProps = (store) => {
+  return{
+    a: store.rA.a,
+    b: store.rB.b
   }
 }
+
 const mapDispatchToProps = (dispatch) => {
-  return {
-    onAgeUp: () => dispatch({type:'AGE_UP', val: 10}),
-    onAgeDown: () => dispatch({type:'AGE_DOWN', val: 5}),
-    onDeleteItem: (id) =>  dispatch({type:'DELETE_ITEM', key:id })
+  return{
+    updateA: (b) => dispatch({type: 'UPDATE_A', b:b}),
+    updateB: (a) => dispatch({type: 'UPDATE_B', a:a})
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStoreToProps, mapDispatchToProps)(App);
